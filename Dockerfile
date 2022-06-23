@@ -9,6 +9,8 @@ RUN apk update && \
         openssh \
         ca-certificates \
         pkgconf \
+	bash \
+	vim \
 	curl
 
 RUN mkdir /app
@@ -21,8 +23,4 @@ ENV GOARCH=amd64
 RUN go mod download
 RUN go build
 
-
-FROM alpine AS release
-COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=build /app/kafka-producer-benchmark /
 ENTRYPOINT ["/kafka-producer-benchmark"]
